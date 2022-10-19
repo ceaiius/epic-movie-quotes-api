@@ -24,7 +24,6 @@ class AuthController extends Controller
 	public function login(LoginRequest $request): JsonResponse
 	{
 		$token = auth()->attempt($request->all());
-
 		if (!$token)
 		{
 			return response()->json(['error' => 'User Does not exist!'], 404);
@@ -53,7 +52,7 @@ class AuthController extends Controller
 	 */
 	public function refresh(): JsonResponse
 	{
-		return $this->respondWithToken(auth()->refresh);
+		return $this->respondWithToken(auth()->refresh());
 	}
 
 	/**
@@ -64,7 +63,7 @@ class AuthController extends Controller
 		return response()->json([
 			'access_token' => $token,
 			'token_type'   => 'bearer',
-			'expires_in'   => auth()->factory->getTTL() * 60,
+			'expires_in'   => 60 * 24 * 60,
 		]);
 	}
 }
