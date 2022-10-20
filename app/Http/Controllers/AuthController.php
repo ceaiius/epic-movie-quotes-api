@@ -6,17 +6,22 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+	public function getUsers()
+	{
+		$username = Auth::user()->username;
+		return $username;
+	}
+
 	public function register(RegisterRequest $request): JsonResponse
 	{
-		User::create([
-			'username'     => $request->username,
-			'email'        => $request->email,
-			'password'     => Hash::make($request->password),
-		]);
+		$attributes = $request->validated();
+		$attributes['password'] = bcrypt($attributes['password']);
+		$user = User::create($attributes);
+		$user->save();
 
 		return response()->json('User successfuly registered!', 200);
 	}
@@ -35,24 +40,6 @@ class AuthController extends Controller
 	public function user(): JsonResponse
 	{
 		return response()->json(auth()->user(), 200);
-	}
-
-	/**
-	 * Log the user out (Invalidate the token).
-	 */
-	public function logout(): JsonResponse
-	{
-		auth()->logout();
-
-		return response()->json(['message' => 'Successfully logged out']);
-	}
-
-	/**
-	 * Refresh a token.
-	 */
-	public function refresh(): JsonResponse
-	{
-		return $this->respondWithToken(auth()->refresh());
 	}
 
 	/**
