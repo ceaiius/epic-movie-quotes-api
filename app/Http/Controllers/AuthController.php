@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-	public function getUsers()
+	public function user()
 	{
 		$username = Auth::user()->username;
 		return $username;
@@ -21,6 +22,9 @@ class AuthController extends Controller
 		$attributes = $request->validated();
 		$attributes['password'] = bcrypt($attributes['password']);
 		$user = User::create($attributes);
+		Auth::login($user);
+		event(new Registered($user));
+
 		$user->save();
 
 		return response()->json('User successfuly registered!', 200);
@@ -35,11 +39,6 @@ class AuthController extends Controller
 		}
 
 		return $this->respondWithToken($token);
-	}
-
-	public function user(): JsonResponse
-	{
-		return response()->json(auth()->user(), 200);
 	}
 
 	/**

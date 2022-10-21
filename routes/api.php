@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function () {
 	Route::post('/register', 'register')->name('register');
 	Route::post('/login', 'login')->name('login');
-	Route::get('/user', 'getUsers')->name('user');
+	Route::get('/user', 'user')->name('user');
+});
+
+Route::controller(VerificationController::class)->group(function () {
+	Route::get('email/verify', 'index')->middleware('auth')->name('verification.notice');
+	Route::get('email/verify/{id}/{hash}', 'show')->middleware(['auth', 'signed'])->name('verification.verify');
 });
