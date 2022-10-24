@@ -25,20 +25,24 @@ class AuthController extends Controller
 		Auth::login($user);
 		event(new Registered($user));
 
-		$user->save();
-
 		return response()->json('User successfuly registered!', 200);
 	}
 
 	public function login(LoginRequest $request): JsonResponse
 	{
 		$token = auth()->attempt($request->all());
+		if ($token && isset(auth()->user()->email_verified_at))
+		{
+			return $this->respondWithToken($token);
+		}
+		elseif ($token && !isset(auth()->user()->email_verified_at))
+		{
+			return response()->json(['error' => 'Please verify your email'], 404);
+		}
 		if (!$token)
 		{
 			return response()->json(['error' => 'User Does not exist!'], 404);
 		}
-
-		return $this->respondWithToken($token);
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -17,7 +18,9 @@ class Authenticate extends Middleware
 	{
 		if (!$request->expectsJson())
 		{
-			return route('login');
+			$user = User::find($request->id);
+			$user->markEmailAsVerified();
+			return 'http://localhost:5173/';
 		}
 	}
 }
