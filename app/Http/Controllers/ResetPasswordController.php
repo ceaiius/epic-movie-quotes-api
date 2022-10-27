@@ -13,7 +13,7 @@ class ResetPasswordController extends Controller
 {
 	public function index($token)
 	{
-		return redirect('http://localhost:5173/?token=' . $token . '&email=' . request()->email);
+		return redirect(env('APP_URL') . '?token=' . $token . '&email=' . request()->email);
 	}
 
 	public function show(ResetPasswordRequest $request): RedirectResponse
@@ -34,7 +34,7 @@ class ResetPasswordController extends Controller
 		);
 
 		return $status === Password::PASSWORD_RESET
-					? redirect('http://localhost:5173/')->with('status', __($status))
+					? redirect(env('APP_URL'))->with('status', __($status))
 					: back()->withErrors(['email' => [__($status)]]);
 	}
 }
