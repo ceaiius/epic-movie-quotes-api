@@ -5,18 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+	public function user()
+	{
+		$username = Auth::user()->username;
+		return $username;
+	}
+
 	public function register(RegisterRequest $request): JsonResponse
 	{
-		User::create([
-			'username'     => $request->username,
-			'email'        => $request->email,
-			'password'     => Hash::make($request->password),
-		]);
+		$attributes = $request->validated();
+		$attributes['password'] = bcrypt($attributes['password']);
+		$user = User::create($attributes);
+		Auth::login($user);
+		event(new Registered($user));
 
 		return response()->json('User successfuly registered!', 200);
 	}
@@ -24,36 +31,18 @@ class AuthController extends Controller
 	public function login(LoginRequest $request): JsonResponse
 	{
 		$token = auth()->attempt($request->all());
-
+		if ($token && isset(auth()->user()->email_verified_at))
+		{
+			return $this->respondWithToken($token);
+		}
+		elseif ($token && !isset(auth()->user()->email_verified_at))
+		{
+			return response()->json(['error' => 'Please verify your email'], 404);
+		}
 		if (!$token)
 		{
 			return response()->json(['error' => 'User Does not exist!'], 404);
 		}
-
-		return $this->respondWithToken($token);
-	}
-
-	public function user(): JsonResponse
-	{
-		return response()->json(auth()->user(), 200);
-	}
-
-	/**
-	 * Log the user out (Invalidate the token).
-	 */
-	public function logout(): JsonResponse
-	{
-		auth()->logout();
-
-		return response()->json(['message' => 'Successfully logged out']);
-	}
-
-	/**
-	 * Refresh a token.
-	 */
-	public function refresh(): JsonResponse
-	{
-		return $this->respondWithToken(auth()->refresh);
 	}
 
 	/**
@@ -64,7 +53,7 @@ class AuthController extends Controller
 		return response()->json([
 			'access_token' => $token,
 			'token_type'   => 'bearer',
-			'expires_in'   => auth()->factory->getTTL() * 60,
+			'expires_in'   => 60 * 24 * 60,
 		]);
 	}
 }
