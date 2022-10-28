@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\VerificationController;
@@ -38,4 +39,9 @@ Route::controller(ResetPasswordController::class)
 ->group(function () {
 	Route::get('/reset-password/{token}', 'index')->name('password.reset.get');
 	Route::post('/reset-password', 'show')->name('password.update.post');
+});
+
+Route::controller(GoogleController::class)->middleware(['web', 'cors'])->group(function () {
+	Route::get('auth/google', 'redirect')->name('google-auth');
+	Route::get('google', 'callbackGoogle');
 });
