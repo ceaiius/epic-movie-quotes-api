@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
-	public function index($token)
+	public function index($token): RedirectResponse
 	{
 		return redirect(env('APP_URL') . '?token=' . $token . '&email=' . request()->email);
 	}
