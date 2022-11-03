@@ -47,7 +47,7 @@ Route::controller(GoogleController::class)->middleware(['web', 'cors'])->group(f
 	Route::get('google', 'callbackGoogle');
 });
 
-Route::controller(MovieController::class)->group(function () {
+Route::controller(MovieController::class)->middleware('auth')->group(function () {
 	Route::get('get-movies', 'create')->name('get-movies');
 	Route::post('store-movies', 'store')->name('store-movies');
 });

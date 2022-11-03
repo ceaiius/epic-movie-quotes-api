@@ -24,13 +24,16 @@ class StoreMovieRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'             => 'required',
-			'director'         => 'required',
-			'description'      => 'required',
-			'genre'            => 'required',
-			'year'             => 'required',
-			'budget'           => 'required',
-			'thumbnail'        => 'required|image',
+			'name_en'             => 'required',
+			'name_ka'             => 'required',
+			'director_en'         => 'required',
+			'director_ka'         => 'required',
+			'description_en'      => 'required',
+			'description_ka'      => 'required',
+			'genre'               => 'required',
+			'year'                => 'required',
+			'budget'              => 'required',
+			'thumbnail'           => 'required|image',
 		];
 	}
 }
