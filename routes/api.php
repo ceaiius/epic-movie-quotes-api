@@ -48,6 +48,9 @@ Route::controller(GoogleController::class)->middleware(['web', 'cors'])->group(f
 });
 
 Route::controller(MovieController::class)->middleware('auth')->group(function () {
-	Route::get('get-movies', 'create')->name('get-movies');
-	Route::post('store-movies', 'store')->name('store-movies');
+	Route::get('movies', 'index')->name('movies');
+	Route::post('movies', 'store')->name('store.movies');
+	Route::get('movies/{movie}', 'get')->name('get.movies');
+	Route::delete('movies/{movie}', 'destroy')->name('delete.movies');
+	Route::post('movies/{movie}', 'update')->name('update.movie');
 });
