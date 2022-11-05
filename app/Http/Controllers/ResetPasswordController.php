@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Notifications\ResetPasswordRequest;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -16,7 +17,7 @@ class ResetPasswordController extends Controller
 		return redirect(env('APP_URL') . '?token=' . $token . '&email=' . request()->email);
 	}
 
-	public function show(ResetPasswordRequest $request): RedirectResponse
+	public function show(ResetPasswordRequest $request): JsonResponse
 	{
 		$request->validated();
 
@@ -34,7 +35,7 @@ class ResetPasswordController extends Controller
 		);
 
 		return $status === Password::PASSWORD_RESET
-					? redirect(env('APP_URL'))->with('status', __($status))
+					? response()->json($status, 200)
 					: back()->withErrors(['email' => [__($status)]]);
 	}
 }

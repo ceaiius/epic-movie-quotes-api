@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
+	private function translate($request, $movie)
+	{
+		$translate_name = ['en' => $request->name_en, 'ka' => $request->name_ka];
+		$movie->setTranslations('name', $translate_name);
+		$translate_director = ['en' => $request->director_en, 'ka' => $request->director_ka];
+		$movie->setTranslations('director', $translate_director);
+		$translate_description = ['en' => $request->description_en, 'ka' => $request->description_ka];
+		$movie->setTranslations('description', $translate_description);
+		$movie->save();
+	}
+
 	public function index(): JsonResponse
 	{
 		return response()->json(Auth::user()->movies, 200);
@@ -27,26 +38,14 @@ class MovieController extends Controller
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
 		$attributes['user_id'] = auth()->id();
 		$movie = Movie::create($attributes);
-		$translate_name = ['en' => $request->name_en, 'ka' => $request->name_ka];
-		$movie->setTranslations('name', $translate_name);
-		$translate_director = ['en' => $request->director_en, 'ka' => $request->director_ka];
-		$movie->setTranslations('director', $translate_director);
-		$translate_description = ['en' => $request->description_en, 'ka' => $request->description_ka];
-		$movie->setTranslations('description', $translate_description);
-		$movie->save();
+		$this->translate($request, $movie);
 	}
 
 	public function update(Movie $movie, UpdateMovieRequest $request)
 	{
 		$attributes = $request->validated();
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
-		$translate_name = ['en' => $request->name_en, 'ka' => $request->name_ka];
-		$movie->setTranslations('name', $translate_name);
-		$translate_director = ['en' => $request->director_en, 'ka' => $request->director_ka];
-		$movie->setTranslations('director', $translate_director);
-		$translate_description = ['en' => $request->description_en, 'ka' => $request->description_ka];
-		$movie->setTranslations('description', $translate_description);
-		$movie->save();
+		$this->translate($request, $movie);
 		$movie->update($attributes);
 	}
 
