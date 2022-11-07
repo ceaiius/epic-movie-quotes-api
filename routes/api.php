@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ForgetPasswordController;
@@ -53,4 +54,9 @@ Route::controller(MovieController::class)->middleware('auth')->group(function ()
 	Route::get('movies/{movie}', 'get')->name('get.movies');
 	Route::delete('movies/{movie}', 'destroy')->name('delete.movies');
 	Route::post('movies/{movie}', 'update')->name('update.movie');
+});
+
+Route::controller(QuoteController::class)->middleware('auth')->group(function () {
+	Route::get('quotes', 'index')->name('quotes');
+	Route::post('quotes', 'store')->name('store.quotes');
 });
