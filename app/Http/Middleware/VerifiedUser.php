@@ -20,7 +20,7 @@ class VerifiedUser extends Middleware
 		{
 			$user = User::find($request->id);
 			$user->markEmailAsVerified();
-			return env('APP_URL');
+			return env('APP_URL_VERIFIED');
 		}
 	}
 }

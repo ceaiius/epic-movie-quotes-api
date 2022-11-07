@@ -72,4 +72,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
 	{
 		$this->notify(new ResetPasswordNotification($token));
 	}
+
+	public function movies()
+	{
+		return $this->hasMany(Movie::class);
+	}
 }

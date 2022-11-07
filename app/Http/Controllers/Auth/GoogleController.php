@@ -30,14 +30,14 @@ class GoogleController extends Controller
 				]);
 
 				$token = Auth::login($new_user);
-				$expires_in = auth('api')->factory()->getTTL() * 60;
+				$expires_in = 60 * 24 * 60;
 
 				return redirect(env('APP_URL') . "redirect?token={$token}&expires_in={$expires_in}");
 			}
 			else
 			{
 				$token = Auth::login($user);
-				$expires_in = auth('api')->factory()->getTTL() * 60;
+				$expires_in = 60 * 24 * 60;
 
 				return redirect(env('APP_URL') . "redirect?token={$token}&expires_in={$expires_in}");
 			}

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ForgetPasswordController;
@@ -44,4 +45,12 @@ Route::controller(ResetPasswordController::class)
 Route::controller(GoogleController::class)->middleware(['web', 'cors'])->group(function () {
 	Route::get('auth/google', 'redirect')->name('google-auth');
 	Route::get('google', 'callbackGoogle');
+});
+
+Route::controller(MovieController::class)->middleware('auth')->group(function () {
+	Route::get('movies', 'index')->name('movies');
+	Route::post('movies', 'store')->name('store.movies');
+	Route::get('movies/{movie}', 'get')->name('get.movies');
+	Route::delete('movies/{movie}', 'destroy')->name('delete.movies');
+	Route::post('movies/{movie}', 'update')->name('update.movie');
 });
