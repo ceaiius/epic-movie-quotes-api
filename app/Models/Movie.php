@@ -20,4 +20,9 @@ class Movie extends Model
 	{
 		return $this->belongsTo(User::class, 'user_id');
 	}
+
+	public function quotes()
+	{
+		return $this->hasMany(Quote::class);
+	}
 }

@@ -53,10 +53,12 @@ Route::controller(MovieController::class)->middleware('auth')->group(function ()
 	Route::post('movies', 'store')->name('store.movies');
 	Route::get('movies/{movie}', 'get')->name('get.movies');
 	Route::delete('movies/{movie}', 'destroy')->name('delete.movies');
-	Route::post('movies/{movie}', 'update')->name('update.movie');
+	Route::post('movies/{movie}', 'update')->name('update.movies');
 });
 
 Route::controller(QuoteController::class)->middleware('auth')->group(function () {
 	Route::get('quotes', 'index')->name('quotes');
 	Route::post('quotes', 'store')->name('store.quotes');
+	Route::delete('quotes/{quote}', 'destroy')->name('delete.quotes');
+	Route::post('quotes/{quote}', 'update')->name('update.quotes');
 });
