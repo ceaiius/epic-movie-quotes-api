@@ -24,7 +24,7 @@ class MovieController extends Controller
 
 	public function index(): JsonResponse
 	{
-		return response()->json(Auth::user()->movies, 200);
+		return response()->json(Auth::user()->movies->load('comments'), 200);
 	}
 
 	public function get(Movie $movie): JsonResponse

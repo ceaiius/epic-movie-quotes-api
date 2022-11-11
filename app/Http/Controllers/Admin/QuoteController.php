@@ -19,12 +19,14 @@ class QuoteController extends Controller
 
 	public function index(): JsonResponse
 	{
-		return response()->json(Quote::with('author')->with('movies')->with('comments')->orderBy('created_at', 'desc')->paginate(2), 200);
+		$quotes = Quote::with('author')->with('movies')->with('comments.author')->orderBy('created_at', 'desc')->paginate(2);
+
+		return response()->json($quotes, 200);
 	}
 
 	public function get(): JsonResponse
 	{
-		return response()->json(Quote::with('author')->with('movies')->orderBy('created_at', 'desc')->get(), 200);
+		return response()->json(Quote::with('author')->with('movies')->with('comments.author')->orderBy('created_at', 'desc')->get(), 200);
 	}
 
 	public function store(StoreQuoteRequest $request): JsonResponse

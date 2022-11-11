@@ -66,5 +66,7 @@ Route::controller(QuoteController::class)->middleware('auth')->group(function ()
 });
 
 Route::controller(CommentController::class)->group(function () {
+	Route::get('comment', 'get')->name('get.author');
 	Route::post('comment/{quote}', 'store')->name('store.comments');
+	Route::delete('comment/{comment}', 'destroy')->name('delete.comments');
 });
