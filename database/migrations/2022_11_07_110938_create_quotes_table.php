@@ -20,6 +20,7 @@ return new class extends Migration {
 			->onDelete('cascade');
 			$table->json('name')->nullable();
 			$table->string('thumbnail')->nullable();
+			$table->unsignedBigInteger('likes')->default(0);
 			$table->timestamps();
 		});
 	}

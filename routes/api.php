@@ -63,6 +63,7 @@ Route::controller(QuoteController::class)->middleware('auth')->group(function ()
 	Route::post('quotes', 'store')->name('store.quotes');
 	Route::delete('quotes/{quote}', 'destroy')->name('delete.quotes');
 	Route::post('quotes/{quote}', 'update')->name('update.quotes');
+	Route::post('quotes-like', 'like')->name('like.quotes');
 });
 
 Route::controller(CommentController::class)->middleware('auth')->group(function () {
