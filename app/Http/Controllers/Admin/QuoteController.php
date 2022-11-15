@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AddLikeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuoteRequest;
 use App\Http\Requests\Admin\UpdateQuoteRequest;
@@ -27,6 +28,7 @@ class QuoteController extends Controller
 
 	public function like(Request $request)
 	{
+		event(new AddLikeEvent($request->all()));
 		$r = DB::table('quote_user')
 			->where('user_id', $request->user_id)
 			->Where('quote_id', $request->quote_id)

@@ -23,3 +23,7 @@ Broadcast::channel('comment-channel', function () {
 Broadcast::channel('delete-comment-channel', function () {
 	return true;
 });
+
+Broadcast::channel('like-channel', function () {
+	return true;
+});
