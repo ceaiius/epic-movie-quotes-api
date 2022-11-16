@@ -29,12 +29,12 @@ class QuoteController extends Controller
 	public function like(Request $request)
 	{
 		event(new AddLikeEvent($request->all()));
-		$r = DB::table('quote_user')
+		$like = DB::table('quote_user')
 			->where('user_id', $request->user_id)
-			->Where('quote_id', $request->quote_id)
+			->where('quote_id', $request->quote_id)
 			->first();
 
-		if (empty($r))
+		if (empty($like))
 		{
 			DB::table('quote_user')
 			 ->insert(
@@ -50,7 +50,7 @@ class QuoteController extends Controller
 		{
 			DB::table('quote_user')
 			->where('user_id', $request->user_id)
-			->Where('quote_id', $request->quote_id)
+			->where('quote_id', $request->quote_id)
 			->delete();
 			return response()->json(['message' => 'unlike'], 200);
 		}
