@@ -82,4 +82,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
 	{
 		return $this->hasMany(Quote::class);
 	}
+
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
+	}
 }

@@ -14,9 +14,7 @@ class AuthController extends Controller
 {
 	public function user()
 	{
-		$username = Auth::user()->username;
-
-		return $username;
+		return  Auth::user();
 	}
 
 	public function register(RegisterRequest $request): JsonResponse

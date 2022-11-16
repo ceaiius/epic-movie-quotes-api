@@ -23,6 +23,11 @@ class Movie extends Model
 
 	public function quotes()
 	{
-		return $this->hasMany(Quote::class);
+		return $this->hasMany(Quote::class, 'quote_id');
+	}
+
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
 	}
 }

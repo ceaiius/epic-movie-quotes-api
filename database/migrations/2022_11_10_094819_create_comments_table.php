@@ -12,15 +12,15 @@ return new class extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('quotes', function (Blueprint $table) {
+		Schema::create('comments', function (Blueprint $table) {
 			$table->id();
+			$table->text('body');
+			$table->foreignId('quote_id')->references('id')->on('quotes')
+			->onDelete('cascade');
 			$table->foreignId('user_id')->references('id')->on('users')
 			->onDelete('cascade');
 			$table->foreignId('movie_id')->references('id')->on('movies')
 			->onDelete('cascade');
-			$table->json('name')->nullable();
-			$table->string('thumbnail')->nullable();
-			$table->unsignedBigInteger('likes')->default(0);
 			$table->timestamps();
 		});
 	}
@@ -32,6 +32,6 @@ return new class extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('quotes');
+		Schema::dropIfExists('comments');
 	}
 };

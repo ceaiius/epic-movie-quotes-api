@@ -24,7 +24,7 @@ class MovieController extends Controller
 
 	public function index(): JsonResponse
 	{
-		return response()->json(Auth::user()->movies, 200);
+		return response()->json(Auth::user()->movies->load('comments'), 200);
 	}
 
 	public function get(Movie $movie): JsonResponse
@@ -32,21 +32,23 @@ class MovieController extends Controller
 		return response()->json($movie, 200);
 	}
 
-	public function store(StoreMovieRequest $request)
+	public function store(StoreMovieRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
 		$attributes['user_id'] = auth()->id();
 		$movie = Movie::create($attributes);
 		$this->translate($request, $movie);
+		return response()->json('Movie added!', 200);
 	}
 
-	public function update(Movie $movie, UpdateMovieRequest $request)
+	public function update(Movie $movie, UpdateMovieRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
 		$this->translate($request, $movie);
 		$movie->update($attributes);
+		return response()->json('Movie updated!', 200);
 	}
 
 	public function destroy(Movie $movie): JsonResponse

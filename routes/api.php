@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\VerificationController;
@@ -58,7 +59,14 @@ Route::controller(MovieController::class)->middleware('auth')->group(function ()
 
 Route::controller(QuoteController::class)->middleware('auth')->group(function () {
 	Route::get('quotes', 'index')->name('quotes');
+	Route::get('quotes-all', 'get')->name('all.quotes');
 	Route::post('quotes', 'store')->name('store.quotes');
 	Route::delete('quotes/{quote}', 'destroy')->name('delete.quotes');
 	Route::post('quotes/{quote}', 'update')->name('update.quotes');
+	Route::post('quotes-like', 'like')->name('like.quotes');
+});
+
+Route::controller(CommentController::class)->middleware('auth')->group(function () {
+	Route::post('comment/{quote}', 'store')->name('store.comments');
+	Route::delete('comment/{comment}', 'destroy')->name('delete.comments');
 });
