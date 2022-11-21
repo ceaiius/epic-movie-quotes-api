@@ -74,7 +74,11 @@ class QuoteController extends Controller
 	public function update(Quote $quote, UpdateQuoteRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();
-		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+		if (isset($attributes['thumbnail']))
+		{
+			$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+		}
+
 		$this->translate($request, $quote);
 		$quote->update($attributes);
 		return response()->json('Quote updated!', 200);
