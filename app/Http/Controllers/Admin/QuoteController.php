@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\AddLikeEvent;
+use App\Events\AddLikePrivateEvent;
+use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuoteRequest;
 use App\Http\Requests\Admin\UpdateQuoteRequest;
+use App\Models\Notifications;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,6 +32,7 @@ class QuoteController extends Controller
 	public function like(Request $request)
 	{
 		event(new AddLikeEvent($request->all()));
+
 		$like = DB::table('quote_user')
 			->where('user_id', $request->user_id)
 			->where('quote_id', $request->quote_id)
@@ -43,7 +47,14 @@ class QuoteController extends Controller
 			 		'user_id'  => $request->user_id,
 			 	]
 			 );
+			// event(new AddLikePrivateEvent($request->all()));
 
+			event(new NotificationEvent($request->all()));
+			Notifications::create([
+				'for_id'   => $request->author_id,
+				'from_id'  => $request->user_id,
+				'quotes_id'=> $request->quote_id,
+			]);
 			return response()->json(['message' => 'like'], 200);
 		}
 		else

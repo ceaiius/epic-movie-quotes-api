@@ -73,6 +73,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
 		$this->notify(new ResetPasswordNotification($token));
 	}
 
+	// public function receivesBroadcastNotification()
+	// {
+	// 	return 'quote_like' . $this->id;
+	// }
+
 	public function movies()
 	{
 		return $this->hasMany(Movie::class);
@@ -86,5 +91,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
 	public function comments()
 	{
 		return $this->hasMany(Comment::class);
+	}
+
+	public function notifications()
+	{
+		return $this->hasMany(Notifications::class, 'for_id');
 	}
 }
