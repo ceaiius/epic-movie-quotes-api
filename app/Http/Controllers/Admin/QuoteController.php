@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\AddLikeEvent;
-use App\Events\AddLikePrivateEvent;
 use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuoteRequest;
@@ -47,14 +46,18 @@ class QuoteController extends Controller
 			 		'user_id'  => $request->user_id,
 			 	]
 			 );
-			// event(new AddLikePrivateEvent($request->all()));
+			if ($request->author_id !== auth()->user()->id)
+			{
+				event(new NotificationEvent($request->all()));
+				Notifications::create([
+					'for_id'   => $request->author_id,
+					'from_id'  => $request->user_id,
+					'quotes_id'=> $request->quote_id,
+					'type'     => 'like',
+					'read'     => false,
+				]);
+			}
 
-			event(new NotificationEvent($request->all()));
-			Notifications::create([
-				'for_id'   => $request->author_id,
-				'from_id'  => $request->user_id,
-				'quotes_id'=> $request->quote_id,
-			]);
 			return response()->json(['message' => 'like'], 200);
 		}
 		else
@@ -69,7 +72,7 @@ class QuoteController extends Controller
 
 	public function get(): JsonResponse
 	{
-		return response()->json(Quote::with('author')->with('movies')->with('comments.author')->orderBy('created_at', 'desc')->get(), 200);
+		return response()->json(Quote::with('author')->with('movies')->with('comments.author')->withCount('users')->orderBy('created_at', 'desc')->get(), 200);
 	}
 
 	public function store(StoreQuoteRequest $request): JsonResponse

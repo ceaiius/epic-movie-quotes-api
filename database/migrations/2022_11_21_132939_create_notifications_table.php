@@ -20,6 +20,8 @@ return new class extends Migration {
 			->onDelete('cascade');
 			$table->foreignId('quotes_id')->references('id')->on('quotes')
 			->onDelete('cascade');
+			$table->string('type');
+			$table->boolean('read');
 			$table->timestamps();
 		});
 	}

@@ -74,4 +74,6 @@ Route::controller(CommentController::class)->middleware('auth')->group(function 
 
 Route::controller(NotificationController::class)->middleware('auth')->group(function () {
 	Route::get('notifications', 'get')->name('get.notifications');
+	Route::post('notifications', 'index')->name('update.notifications');
+	Route::get('notifications-count', 'count')->name('count.notifications');
 });

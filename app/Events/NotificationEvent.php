@@ -17,14 +17,14 @@ class NotificationEvent implements ShouldBroadcast
 	 *
 	 * @return void
 	 */
-	public function __construct(public $like)
+	public function __construct(public $notification)
 	{
-		$this->like = $like;
+		$this->notification = $notification;
 	}
 
 	public function broadcastOn()
 	{
-		return new PrivateChannel('like-notification.' . $this->like['author_id']);
+		return new PrivateChannel('like-notification.' . $this->notification['author_id']);
 	}
 
 	public function broadcastAs()
