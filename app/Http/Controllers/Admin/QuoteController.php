@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\AddLikeEvent;
+use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuoteRequest;
 use App\Http\Requests\Admin\UpdateQuoteRequest;
+use App\Models\Notifications;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,6 +31,7 @@ class QuoteController extends Controller
 	public function like(Request $request)
 	{
 		event(new AddLikeEvent($request->all()));
+
 		$like = DB::table('quote_user')
 			->where('user_id', $request->user_id)
 			->where('quote_id', $request->quote_id)
@@ -43,6 +46,17 @@ class QuoteController extends Controller
 			 		'user_id'  => $request->user_id,
 			 	]
 			 );
+			if ($request->author_id !== auth()->user()->id)
+			{
+				event(new NotificationEvent($request->all()));
+				Notifications::create([
+					'for_id'   => $request->author_id,
+					'from_id'  => $request->user_id,
+					'quotes_id'=> $request->quote_id,
+					'type'     => 'like',
+					'read'     => false,
+				]);
+			}
 
 			return response()->json(['message' => 'like'], 200);
 		}
@@ -58,7 +72,7 @@ class QuoteController extends Controller
 
 	public function get(): JsonResponse
 	{
-		return response()->json(Quote::with('author')->with('movies')->with('comments.author')->orderBy('created_at', 'desc')->get(), 200);
+		return response()->json(Quote::with('author')->with('movies')->with('comments.author')->withCount('users')->orderBy('created_at', 'desc')->get(), 200);
 	}
 
 	public function store(StoreQuoteRequest $request): JsonResponse
@@ -74,7 +88,11 @@ class QuoteController extends Controller
 	public function update(Quote $quote, UpdateQuoteRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();
-		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+		if (isset($attributes['thumbnail']))
+		{
+			$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+		}
+
 		$this->translate($request, $quote);
 		$quote->update($attributes);
 		return response()->json('Quote updated!', 200);

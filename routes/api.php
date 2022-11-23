@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -69,4 +70,10 @@ Route::controller(QuoteController::class)->middleware('auth')->group(function ()
 Route::controller(CommentController::class)->middleware('auth')->group(function () {
 	Route::post('comment/{quote}', 'store')->name('store.comments');
 	Route::delete('comment/{comment}', 'destroy')->name('delete.comments');
+});
+
+Route::controller(NotificationController::class)->middleware('auth')->group(function () {
+	Route::get('notifications', 'get')->name('get.notifications');
+	Route::post('notifications', 'index')->name('update.notifications');
+	Route::get('notifications-count', 'count')->name('count.notifications');
 });
