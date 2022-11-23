@@ -23,9 +23,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function () {
-	Route::post('/register', 'register')->name('register');
-	Route::post('/login', 'login')->name('login');
-	Route::get('/user', 'user')->name('user');
+	Route::post('register', 'register')->name('register');
+	Route::post('login', 'login')->name('login');
+	Route::get('user', 'user')->name('user');
+	Route::get('me', 'me')->middleware('jwt.auth')->name('me');
+	Route::get('logout', 'logout')->middleware('jwt.auth')->name('logout');
 });
 
 Route::controller(VerificationController::class)->group(function () {
@@ -45,12 +47,12 @@ Route::controller(ResetPasswordController::class)
 	Route::post('/reset-password', 'show')->name('password.update.post');
 });
 
-Route::controller(GoogleController::class)->middleware(['web', 'cors'])->group(function () {
+Route::controller(GoogleController::class)->middleware(['cors'])->group(function () {
 	Route::get('auth/google', 'redirect')->name('google-auth');
 	Route::get('google', 'callbackGoogle');
 });
 
-Route::controller(MovieController::class)->middleware('auth')->group(function () {
+Route::controller(MovieController::class)->group(function () {
 	Route::get('movies', 'index')->name('movies');
 	Route::post('movies', 'store')->name('store.movies');
 	Route::get('movies/{movie}', 'get')->name('get.movies');
@@ -58,7 +60,7 @@ Route::controller(MovieController::class)->middleware('auth')->group(function ()
 	Route::post('movies/{movie}', 'update')->name('update.movies');
 });
 
-Route::controller(QuoteController::class)->middleware('auth')->group(function () {
+Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes', 'index')->name('quotes');
 	Route::get('quotes-all', 'get')->name('all.quotes');
 	Route::post('quotes', 'store')->name('store.quotes');
@@ -67,12 +69,12 @@ Route::controller(QuoteController::class)->middleware('auth')->group(function ()
 	Route::post('quotes-like', 'like')->name('like.quotes');
 });
 
-Route::controller(CommentController::class)->middleware('auth')->group(function () {
+Route::controller(CommentController::class)->group(function () {
 	Route::post('comment/{quote}', 'store')->name('store.comments');
 	Route::delete('comment/{comment}', 'destroy')->name('delete.comments');
 });
 
-Route::controller(NotificationController::class)->middleware('auth')->group(function () {
+Route::controller(NotificationController::class)->group(function () {
 	Route::get('notifications', 'get')->name('get.notifications');
 	Route::post('notifications', 'index')->name('update.notifications');
 	Route::get('notifications-count', 'count')->name('count.notifications');

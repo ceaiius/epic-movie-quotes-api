@@ -7,7 +7,6 @@ use App\Http\Requests\Admin\StoreMovieRequest;
 use App\Http\Requests\Admin\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
@@ -24,7 +23,7 @@ class MovieController extends Controller
 
 	public function index(): JsonResponse
 	{
-		return response()->json(Auth::user()->movies->load('comments'), 200);
+		return response()->json(jwtUser()->movies->load('comments'), 200);
 	}
 
 	public function get(Movie $movie): JsonResponse
@@ -36,7 +35,7 @@ class MovieController extends Controller
 	{
 		$attributes = $request->validated();
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
-		$attributes['user_id'] = auth()->id();
+		$attributes['user_id'] = jwtUser()->id;
 		$movie = Movie::create($attributes);
 		$this->translate($request, $movie);
 		return response()->json('Movie added!', 200);

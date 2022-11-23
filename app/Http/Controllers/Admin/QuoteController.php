@@ -46,7 +46,7 @@ class QuoteController extends Controller
 			 		'user_id'  => $request->user_id,
 			 	]
 			 );
-			if ($request->author_id !== auth()->user()->id)
+			if ($request->author_id !== jwtUser()->id)
 			{
 				event(new NotificationEvent($request->all()));
 				Notifications::create([
@@ -79,7 +79,7 @@ class QuoteController extends Controller
 	{
 		$attributes = $request->validated();
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
-		$attributes['user_id'] = auth()->id();
+		$attributes['user_id'] = jwtUser()->id;
 		$quote = Quote::create($attributes);
 		$this->translate($request, $quote);
 		return response()->json('Quote added!', 200);

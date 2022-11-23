@@ -4,42 +4,52 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
 	public function redirect()
 	{
-		return Socialite::driver('google')->redirect();
+		return Socialite::driver('google')->stateless()->redirect();
 	}
 
 	public function callbackGoogle()
 	{
 		try
 		{
-			$google_user = Socialite::driver('google')->user();
+			$google_user = Socialite::driver('google')->stateless()->user();
 
 			$user = User::firstWhere('email', $google_user->getEmail());
 
 			if (!$user)
 			{
-				$new_user = User::create([
+				User::create([
 					'username'  => $google_user->getName(),
 					'email'     => $google_user->getEmail(),
 				]);
+				$payload = [
+					'exp' => Carbon::now()->addDay(1)->timestamp,
+					'uid' => User::where('email', $google_user->getEmail())->first()->id,
+				];
+				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 
-				$token = Auth::login($new_user);
-				$expires_in = 60 * 24 * 60;
+				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-				return redirect(env('APP_URL') . "redirect?token={$token}&expires_in={$expires_in}");
+				return redirect(env('APP_URL') . 'home')->withCookie($cookie);
 			}
 			else
 			{
-				$token = Auth::login($user);
-				$expires_in = 60 * 24 * 60;
+				$payload = [
+					'exp' => Carbon::now()->addDay(1)->timestamp,
+					'uid' => User::where('email', $google_user->getEmail())->first()->id,
+				];
+				$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 
-				return redirect(env('APP_URL') . "redirect?token={$token}&expires_in={$expires_in}");
+				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+				return redirect(env('APP_URL') . 'home')->withCookie($cookie);
 			}
 		}
 		catch(\Throwable $th)
