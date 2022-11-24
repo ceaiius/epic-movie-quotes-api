@@ -6,12 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "firebase/php-jwt": "^6.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
-        "php-open-source-saver/jwt-auth": "^2.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-translatable": "^6.1"
     },
@@ -30,7 +30,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

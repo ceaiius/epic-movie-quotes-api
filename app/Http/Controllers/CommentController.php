@@ -16,11 +16,11 @@ class CommentController extends Controller
 	public function store(StoreCommentRequest $request, Quote $quote): JsonResponse
 	{
 		$attributes = $request->validated();
-		$attributes['user_id'] = auth()->id();
+		$attributes['user_id'] = jwtUser()->id;
 		$attributes['movie_id'] = $quote->movie_id;
 		event(new AddCommentEvent($attributes));
 
-		if ($request->author_id !== auth()->user()->id)
+		if ($request->author_id !== jwtUser()->id)
 		{
 			event(new NotificationEvent($request->all()));
 			Notifications::create([
