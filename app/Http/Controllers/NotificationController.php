@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Notifications;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
 	public function get(): JsonResponse
 	{
-		$notifications = Auth::user()->notifications->sortDesc()->load('from');
+		$notifications = jwtUser()->notifications->sortDesc()->load('from');
 		return response()->json($notifications->values()->all(), 200);
 	}
 
@@ -25,7 +24,7 @@ class NotificationController extends Controller
 
 	public function count()
 	{
-		$count = Notifications::where('read', 0)->count();
+		$count = Notifications::where('for_id', jwtUser()->id)->where('read', 0)->count();
 		return response()->json($count, 200);
 	}
 }

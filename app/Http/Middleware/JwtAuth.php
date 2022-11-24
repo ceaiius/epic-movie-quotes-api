@@ -8,11 +8,10 @@ use Exception;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Illuminate\Http\JsonResponse;
 
 class JwtAuth
 {
-	public function handle(Request $request, Closure $next): JsonResponse | Closure
+	public function handle(Request $request, Closure $next)
 	{
 		try
 		{

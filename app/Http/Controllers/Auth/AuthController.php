@@ -30,35 +30,6 @@ class AuthController extends Controller
 		return response()->json('User successfuly registered!', 200);
 	}
 
-	// public function login(LoginRequest $request): JsonResponse
-	// {
-	// 	$token = auth()->attempt($request->all());
-	// 	if ($token && isset(auth()->user()->email_verified_at))
-	// 	{
-	// 		return $this->respondWithToken($token);
-	// 	}
-	// 	elseif ($token && !isset(auth()->user()->email_verified_at))
-	// 	{
-	// 		return response()->json(['error' => 'Please verify your email'], 404);
-	// 	}
-	// 	if (!$token)
-	// 	{
-	// 		return response()->json(['error' => 'User Does not exist!'], 404);
-	// 	}
-	// }
-
-	// /**
-	//  * Get the token array structure.
-	//  */
-	// protected function respondWithToken(string $token): JsonResponse
-	// {
-	// 	return response()->json([
-	// 		'access_token' => $token,
-	// 		'token_type'   => 'bearer',
-	// 		'expires_in'   => 60 * 24 * 60,
-	// 	]);
-	// }
-
 	public function login(LoginRequest $request): JsonResponse
 	{
 		$authenticated = auth()->attempt(
@@ -86,14 +57,14 @@ class AuthController extends Controller
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
 
-		$cookie = cookie('access_token', $jwt, $remember, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+		$cookie = cookie('access_token', $jwt, $remember, '/', config('auth.front_end_top_level_domain'), true, true, false);
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json($jwt, 200)->withCookie($cookie);
 	}
 
 	public function logout(): JsonResponse
 	{
-		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false);
 
 		return response()->json('success', 200)->withCookie($cookie);
 	}
