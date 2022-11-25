@@ -19,7 +19,7 @@ return new class extends Migration {
 			$table->json('name')->nullable();
 			$table->json('director')->nullable();
 			$table->json('description')->nullable();
-			$table->string('genre');
+			$table->json('genre');
 			$table->string('year');
 			$table->string('budget');
 			$table->string('thumbnail')->nullable();
