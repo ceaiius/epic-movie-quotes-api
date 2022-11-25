@@ -36,6 +36,7 @@ class MovieController extends Controller
 		$attributes = $request->validated();
 		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
 		$attributes['user_id'] = jwtUser()->id;
+		$attributes['genre'] = json_encode($request->genre);
 		$movie = Movie::create($attributes);
 		$this->translate($request, $movie);
 		return response()->json('Movie added!', 200);
