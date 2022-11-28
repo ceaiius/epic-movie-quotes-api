@@ -28,6 +28,7 @@ Route::controller(AuthController::class)->group(function () {
 	Route::get('user', 'user')->name('user');
 	Route::get('me', 'me')->middleware('jwt.auth')->name('me');
 	Route::get('logout', 'logout')->middleware('jwt.auth')->name('logout');
+	Route::post('update', 'update')->name('update');
 });
 
 Route::controller(VerificationController::class)->group(function () {
