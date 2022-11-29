@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ProfileEditRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class UpdateProfileController extends Controller
 {
@@ -19,7 +20,14 @@ class UpdateProfileController extends Controller
 			$user->thumbnail = $attributes['thumbnail'];
 		}
 
-		$user->username = $attributes['username'];
+		if (isset($attributes['username']))
+		{
+			$user->username = $attributes['username'];
+		}
+		if (isset($attributes['password']))
+		{
+			$user->password = Hash::make($attributes['password']);
+		}
 		$user->save();
 		return response()->json('profile updated', 200);
 	}

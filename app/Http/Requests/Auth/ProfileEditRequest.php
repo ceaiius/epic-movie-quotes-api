@@ -26,6 +26,7 @@ class ProfileEditRequest extends FormRequest
 		return [
 			'thumbnail' => 'nullable|image',
 			'username'  => 'nullable',
+			'password'  => 'nullable',
 		];
 	}
 }
