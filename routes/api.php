@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\QuoteController;
+use App\Http\Controllers\Admin\UpdateProfileController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
@@ -28,7 +29,6 @@ Route::controller(AuthController::class)->group(function () {
 	Route::get('user', 'user')->name('user');
 	Route::get('me', 'me')->middleware('jwt.auth')->name('me');
 	Route::get('logout', 'logout')->middleware('jwt.auth')->name('logout');
-	Route::post('update', 'update')->name('update');
 });
 
 Route::controller(VerificationController::class)->group(function () {
@@ -79,4 +79,8 @@ Route::controller(NotificationController::class)->group(function () {
 	Route::get('notifications', 'get')->name('get.notifications');
 	Route::post('notifications', 'index')->name('update.notifications');
 	Route::get('notifications-count', 'count')->name('count.notifications');
+});
+
+Route::controller(UpdateProfileController::class)->group(function () {
+	Route::post('update', 'index')->name('update');
 });

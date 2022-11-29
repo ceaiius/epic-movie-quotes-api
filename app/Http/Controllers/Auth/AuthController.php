@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\ProfileEditRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
@@ -61,16 +60,6 @@ class AuthController extends Controller
 		$cookie = cookie('access_token', $jwt, $remember, '/', config('auth.front_end_top_level_domain'), true, true, false);
 
 		return response()->json($jwt, 200)->withCookie($cookie);
-	}
-
-	public function update(ProfileEditRequest $request): JsonResponse
-	{
-		$attributes = $request->validated();
-		$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
-		$user = User::find(jwtUser()->id);
-		$user->thumbnail = $attributes['thumbnail'];
-		$user->save();
-		return response()->json('profile updated', 200);
 	}
 
 	public function logout(): JsonResponse
