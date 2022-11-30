@@ -28,6 +28,7 @@ class GoogleController extends Controller
 				User::create([
 					'username'  => $google_user->getName(),
 					'email'     => $google_user->getEmail(),
+					'thumbnail' => $google_user->avatar,
 				]);
 				$payload = [
 					'exp' => Carbon::now()->addDay(1)->timestamp,

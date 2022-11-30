@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\QuoteController;
+use App\Http\Controllers\Admin\UpdateProfileController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
@@ -78,4 +79,8 @@ Route::controller(NotificationController::class)->group(function () {
 	Route::get('notifications', 'get')->name('get.notifications');
 	Route::post('notifications', 'index')->name('update.notifications');
 	Route::get('notifications-count', 'count')->name('count.notifications');
+});
+
+Route::controller(UpdateProfileController::class)->group(function () {
+	Route::post('update', 'index')->name('update');
 });

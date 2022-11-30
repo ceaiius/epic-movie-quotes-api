@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 		'username',
 		'email',
 		'password',
+		'thumbnail',
 	];
 
 	/**
@@ -71,11 +72,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 	{
 		$this->notify(new ResetPasswordNotification($token));
 	}
-
-	// public function receivesBroadcastNotification()
-	// {
-	// 	return 'quote_like' . $this->id;
-	// }
 
 	public function movies()
 	{
