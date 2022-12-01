@@ -14,6 +14,8 @@ class Movie extends Model
 
 	protected $guarded = ['id', 'name', 'director', 'description'];
 
+	protected $fillable = ['quote_id'];
+
 	public $translatable = ['name', 'director', 'description'];
 
 	public function user()
@@ -23,7 +25,7 @@ class Movie extends Model
 
 	public function quotes()
 	{
-		return $this->hasMany(Quote::class, 'quote_id');
+		return $this->hasMany(Quote::class);
 	}
 
 	public function comments()

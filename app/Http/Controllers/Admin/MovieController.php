@@ -23,7 +23,7 @@ class MovieController extends Controller
 
 	public function index(): JsonResponse
 	{
-		return response()->json(jwtUser()->movies->load('comments'), 200);
+		return response()->json(jwtUser()->movies->load('quotes'), 200);
 	}
 
 	public function get(Movie $movie): JsonResponse

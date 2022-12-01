@@ -68,6 +68,7 @@ Route::controller(QuoteController::class)->group(function () {
 	Route::delete('quotes/{quote}', 'destroy')->name('delete.quotes');
 	Route::post('quotes/{quote}', 'update')->name('update.quotes');
 	Route::post('quotes-like', 'like')->name('like.quotes');
+	Route::post('check', 'check')->name('check.quotes');
 });
 
 Route::controller(CommentController::class)->group(function () {
