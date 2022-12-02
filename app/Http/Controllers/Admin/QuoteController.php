@@ -24,8 +24,15 @@ class QuoteController extends Controller
 
 	public function index(): JsonResponse
 	{
-		$quotes = Quote::with('author')->with('movies')->with('comments.author')->withCount('users')->orderBy('created_at', 'desc')->paginate(2);
+		$quotes = Quote::with('author')->with('users')->with('movies')->with('comments.author')->withCount('users')->orderBy('created_at', 'desc')->paginate(2);
 		return response()->json($quotes, 200);
+	}
+
+	public function check(Request $request)
+	{
+		$like = DB::table('quote_user')->where('user_id', jwtUser()->id)->where('quote_id', $request->quote_id)->first();
+
+		return response()->json($like ? true : false);
 	}
 
 	public function like(Request $request)

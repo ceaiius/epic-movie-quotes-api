@@ -49,38 +49,39 @@ Route::controller(ResetPasswordController::class)
 });
 
 Route::controller(GoogleController::class)->middleware(['cors'])->group(function () {
-	Route::get('auth/google', 'redirect')->name('google-auth');
-	Route::get('google', 'callbackGoogle');
+	Route::get('auth/google', 'redirect')->name('google.auth');
+	Route::get('google', 'callbackGoogle')->name('google.callback');
 });
 
-Route::controller(MovieController::class)->group(function () {
-	Route::get('movies', 'index')->name('movies');
-	Route::post('movies', 'store')->name('store.movies');
-	Route::get('movies/{movie}', 'get')->name('get.movies');
-	Route::delete('movies/{movie}', 'destroy')->name('delete.movies');
-	Route::post('movies/{movie}', 'update')->name('update.movies');
-});
+Route::middleware('jwt.auth')->group(function () {
+	Route::controller(MovieController::class)->group(function () {
+		Route::get('movies', 'index')->name('movies');
+		Route::post('movies', 'store')->name('movies.store');
+		Route::get('movies/{movie}', 'get')->name('movies.get');
+		Route::delete('movies/{movie}', 'destroy')->name('movies.destroy');
+		Route::post('movies/{movie}', 'update')->name('movies.update');
+	});
 
-Route::controller(QuoteController::class)->group(function () {
-	Route::get('quotes', 'index')->name('quotes');
-	Route::get('quotes-all', 'get')->name('all.quotes');
-	Route::post('quotes', 'store')->name('store.quotes');
-	Route::delete('quotes/{quote}', 'destroy')->name('delete.quotes');
-	Route::post('quotes/{quote}', 'update')->name('update.quotes');
-	Route::post('quotes-like', 'like')->name('like.quotes');
-});
+	Route::controller(QuoteController::class)->group(function () {
+		Route::get('quotes', 'index')->name('quotes');
+		Route::get('quotes-all', 'get')->name('quotes.all');
+		Route::post('quotes', 'store')->name('quotes.store');
+		Route::delete('quotes/{quote}', 'destroy')->name('quotes.destroy');
+		Route::post('quotes/{quote}', 'update')->name('quotes.update');
+		Route::post('quotes-like', 'like')->name('quotes.like');
+		Route::post('check', 'check')->name('quotes.check');
+	});
 
-Route::controller(CommentController::class)->group(function () {
-	Route::post('comment/{quote}', 'store')->name('store.comments');
-	Route::delete('comment/{comment}', 'destroy')->name('delete.comments');
-});
+	Route::controller(CommentController::class)->group(function () {
+		Route::post('comment/{quote}', 'store')->name('comments.store');
+		Route::delete('comment/{comment}', 'destroy')->name('comments.destroy');
+	});
 
-Route::controller(NotificationController::class)->group(function () {
-	Route::get('notifications', 'get')->name('get.notifications');
-	Route::post('notifications', 'index')->name('update.notifications');
-	Route::get('notifications-count', 'count')->name('count.notifications');
-});
+	Route::controller(NotificationController::class)->group(function () {
+		Route::get('notifications', 'get')->name('notifications.get');
+		Route::post('notifications', 'index')->name('notifications.update');
+		Route::get('notifications-count', 'count')->name('notifications.count');
+	});
 
-Route::controller(UpdateProfileController::class)->group(function () {
-	Route::post('update', 'index')->name('update');
+	Route::post('update', [UpdateProfileController::class, 'index'])->name('update');
 });

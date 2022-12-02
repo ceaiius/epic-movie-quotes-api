@@ -23,7 +23,7 @@ class MovieController extends Controller
 
 	public function index(): JsonResponse
 	{
-		return response()->json(jwtUser()->movies->load('comments'), 200);
+		return response()->json(jwtUser()->movies->load('quotes'), 200);
 	}
 
 	public function get(Movie $movie): JsonResponse
@@ -45,6 +45,7 @@ class MovieController extends Controller
 	public function update(Movie $movie, UpdateMovieRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();
+
 		if (isset($attributes['thumbnail']))
 		{
 			$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
