@@ -1,0 +1,33 @@
+components:
+  schemas:
+    Movies:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 1
+            name:
+              type: json
+              example: {"en" : "Nika","ka" : "ნიკა"}
+            director: 
+              type: json
+              example: {"en" : "Christopher Nolan", "ka" : "კრისტოფერ ნოლანი"}
+            description:
+              type: json
+              example: {"en" : "Cool shit", "ka" : "საკაიფოა"}
+            genre: 
+              type: json
+              example: ['Horror', 'Drama']
+            year: 
+              type: number
+              example : 1999
+            budget: 
+              type: number
+              example: 200000
+            thumbnail :
+              type: file
+              format: binary
+            
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
