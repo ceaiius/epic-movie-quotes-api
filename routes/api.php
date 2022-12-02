@@ -53,7 +53,7 @@ Route::controller(GoogleController::class)->middleware(['cors'])->group(function
 	Route::get('google', 'callbackGoogle');
 });
 
-Route::controller(MovieController::class)->group(function () {
+Route::controller(MovieController::class)->middleware('jwt.auth')->group(function () {
 	Route::get('movies', 'index')->name('movies');
 	Route::post('movies', 'store')->name('store.movies');
 	Route::get('movies/{movie}', 'get')->name('get.movies');
@@ -61,7 +61,7 @@ Route::controller(MovieController::class)->group(function () {
 	Route::post('movies/{movie}', 'update')->name('update.movies');
 });
 
-Route::controller(QuoteController::class)->group(function () {
+Route::controller(QuoteController::class)->middleware('jwt.auth')->group(function () {
 	Route::get('quotes', 'index')->name('quotes');
 	Route::get('quotes-all', 'get')->name('all.quotes');
 	Route::post('quotes', 'store')->name('store.quotes');
@@ -71,17 +71,17 @@ Route::controller(QuoteController::class)->group(function () {
 	Route::post('check', 'check')->name('check.quotes');
 });
 
-Route::controller(CommentController::class)->group(function () {
+Route::controller(CommentController::class)->middleware('jwt.auth')->group(function () {
 	Route::post('comment/{quote}', 'store')->name('store.comments');
 	Route::delete('comment/{comment}', 'destroy')->name('delete.comments');
 });
 
-Route::controller(NotificationController::class)->group(function () {
+Route::controller(NotificationController::class)->middleware('jwt.auth')->group(function () {
 	Route::get('notifications', 'get')->name('get.notifications');
 	Route::post('notifications', 'index')->name('update.notifications');
 	Route::get('notifications-count', 'count')->name('count.notifications');
 });
 
-Route::controller(UpdateProfileController::class)->group(function () {
+Route::controller(UpdateProfileController::class)->middleware('jwt.auth')->group(function () {
 	Route::post('update', 'index')->name('update');
 });

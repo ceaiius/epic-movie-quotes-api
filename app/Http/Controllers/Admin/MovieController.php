@@ -45,6 +45,7 @@ class MovieController extends Controller
 	public function update(Movie $movie, UpdateMovieRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();
+
 		if (isset($attributes['thumbnail']))
 		{
 			$attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
