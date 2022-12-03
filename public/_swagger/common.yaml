@@ -9,6 +9,15 @@ components:
         type: integer
         minimum: 1
         default: 1
+    hash:
+      name: hash
+      in: path
+      description: The hash of the resource
+      required: true
+      schema:
+        type: string
+        minimum: 1
+        default: 1
 
   schemas:
     Id:

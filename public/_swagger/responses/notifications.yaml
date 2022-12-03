@@ -1,0 +1,13 @@
+components:
+  responses:
+    notifications:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/notifications.yaml#/components/schemas/Notifications"
+     

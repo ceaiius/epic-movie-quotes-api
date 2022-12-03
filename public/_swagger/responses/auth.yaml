@@ -1,0 +1,13 @@
+components:
+  responses:
+    auth:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/auth.yaml#/components/schemas/Auth"
+     

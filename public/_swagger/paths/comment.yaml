@@ -1,0 +1,56 @@
+paths:
+  /comment/{id}:
+    post:
+      tags:
+        - Comment
+      security:
+        - bearerAuth: []
+      summary: post comment
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  example: "Nice quote bro"
+                quote_id:
+                  type: integer
+                  example: 1
+                user_id:
+                  type: integer
+                  example: 2
+                username:
+                  type: string
+                  example: "dooom"
+                author_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: Commented
+          content:
+            multipart/form-data:
+              schema:
+                allOf:
+                  - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+    delete:
+      tags:
+        - Comment
+      security:
+        - bearerAuth: []
+      summary: delete a comment
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/comment.yaml#/components/responses/comment/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"

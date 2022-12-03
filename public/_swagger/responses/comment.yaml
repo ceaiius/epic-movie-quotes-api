@@ -1,0 +1,13 @@
+components:
+  responses:
+    comment:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/comment.yaml#/components/schemas/Comment"
+     

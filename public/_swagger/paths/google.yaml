@@ -1,0 +1,37 @@
+paths:
+  /google:
+    get:
+      tags:
+        - Google
+      security:
+        - bearerAuth: []
+      summary: login with google
+      responses:
+        "200":
+          description: Logged In
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/auth.yaml#/components/schemas/Auth"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /google-callback:
+     get:
+      tags:
+        - Google
+      security:
+        - bearerAuth: []
+      summary: login with google
+      responses:
+        "200":
+          description: Logged In
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/auth.yaml#/components/schemas/Auth"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"

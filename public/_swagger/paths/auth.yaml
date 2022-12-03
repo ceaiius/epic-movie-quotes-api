@@ -1,0 +1,122 @@
+paths:
+  /register:
+    post:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: register a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "mfdoom"
+                email:
+                  type: string
+                  example: "mfdoom@gmail.com"
+                password:
+                  type: string
+                  example: "allcaps"
+                password_confirmation:
+                  type: string
+                  example: "allcaps"
+              required:
+                - username
+                - email
+                - password
+   
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/auth.yaml#/components/schemas/Auth"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /login:
+    post:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "mfdoom@gmail.com"
+                password:
+                  type: string
+                  example: "allcaps"
+              required:
+                - email
+                - password
+   
+      responses:
+        "200":
+          description: Logged In
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/auth.yaml#/components/schemas/Auth"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /logout:
+    get:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: logout a user
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/auth/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /me:
+    get:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: authenticate a user
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/auth/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /user:
+    get:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: get the authenticated user
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/auth/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
+  
+
+
+    
+   
+
+    

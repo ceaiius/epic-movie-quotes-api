@@ -1,0 +1,24 @@
+components:
+  schemas:
+    Quotes:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 1
+            movie_id:
+              type: integer
+              example: 1
+            name:
+              type: json
+              example: {"en" : "Nika","ka" : "ნიკა"}
+            thumbnail:
+              type: file
+              format: binary
+            likes:
+              type: integer
+              example: 0
+            
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"

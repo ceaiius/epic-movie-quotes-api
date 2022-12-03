@@ -17,8 +17,6 @@ paths:
       security:
         - bearerAuth: []
       summary: add new movie
-      parameters:
-        - $ref: "../common.yaml#/components/parameters/id"
       requestBody:
         required: true
         content:
