@@ -1,0 +1,59 @@
+paths:
+  /notifications:
+    get:
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      summary: return all notifications of one user
+      responses:
+        "200":
+          $ref: "../responses/notifications.yaml#/components/responses/notifications/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+    post:
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      summary: mark notifications as read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  example: [1,2]
+              required:
+                - ids
+                
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/notifications.yaml#/components/schemas/Notifications"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /notifications-count:
+    get:
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      summary: return count of notifications
+      responses:
+        "200":
+          $ref: "../responses/notifications.yaml#/components/responses/notifications/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
+
+  
+    

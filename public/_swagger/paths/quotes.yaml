@@ -1,0 +1,198 @@
+paths:
+  /quotes:
+    get:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: return paginated quotes
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: add new quote
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name_en:
+                  type: string
+                  example: "I like kung-fu"
+                  minLength: 3
+                name_ka:
+                  type: string
+                  example: "კუნგფუ მევასება"
+                  minLength: 3
+                movie_id:
+                  type: integer
+                  example: 1
+                thumbnail :
+                  type: file
+                  format: binary
+              required:
+                - name_en
+                - name_ka
+                - thumbnail
+      responses:
+        "201":
+          description: Created
+          content:
+            multipart/form-data:
+              schema:
+                allOf:
+                  - $ref: "../schemas/quotes.yaml#/components/schemas/Quotes"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /quotes/{id}:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: update quote
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name_en:
+                  type: string
+                  example: "I don't like kung-fu"
+                  minLength: 3
+                name_ka:
+                  type: string
+                  example: "კუნგფუ არ მევასება"
+                  minLength: 3
+                movie_id:
+                  type: integer
+                  example: 1
+                thumbnail :
+                  type: file
+                  format: binary
+      responses:
+        "200":
+          description: Updated
+          content:
+            multipart/form-data:
+              schema:
+                allOf:
+                  - $ref: "../schemas/quotes.yaml#/components/schemas/Quotes"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+    delete:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: delete a quote
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
+  /quotes-all:
+    get:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: return all quotes
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /quotes-like:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: like a quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quote_id:
+                  type: integer
+                  example: 1
+                user_id:
+                  type: integer
+                  example: 2
+                username:
+                  type: string
+                  example: "dooooom"
+                author_id :
+                  type: integer
+                  example: 1
+              required:
+                - quote_id
+                - user_id
+                - username
+                - author_id
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/quotes.yaml#/components/schemas/Quotes"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /check:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: like a quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quote_id:
+                  type: integer
+                  example: 6
+              required:
+                - quote_id
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/quotes.yaml#/components/schemas/Quotes"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
+
+  
+    

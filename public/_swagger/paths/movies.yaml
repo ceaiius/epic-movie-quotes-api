@@ -1,0 +1,170 @@
+paths:
+  /movies:
+    get:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: return all movies
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+    post:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: add new movie
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name_en:
+                  type: string
+                  example: "Matrix"
+                  minLength: 3
+                name_ka:
+                  type: string
+                  example: "მატრიცა"
+                  minLength: 3
+                director_en: 
+                  type: string
+                  example: "Christopher Nolan"
+                  minLength: 3
+                director_ka: 
+                  type: string
+                  example: "კრისტოფერ ნოლანი"
+                  minLength: 3
+                description_en:
+                  type: string
+                  example: "Cool shit"
+                description_ka:
+                  type: string
+                  example: "საკაიფოა"
+                genre: 
+                  type: array
+                  example: ['Horror', 'Drama']
+                year: 
+                  type: number
+                  example : 1999
+                budget: 
+                  type: number
+                  example: 200000
+                thumbnail :
+                  type: file
+                  format: binary
+              required:
+                - name_en
+                - name_ka
+                - director_en
+                - director_ka
+                - description_en
+                - description_ka
+                - genre
+                - year
+                - budget
+                - thumbnail
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/movies.yaml#/components/schemas/Movies"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /movies/{id}:
+     get:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: returns a single movie
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+     post:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: update movie
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: json
+                  example: {"en" : "Nika","ka" : "ნიკა"}
+                  minLength: 2
+                director: 
+                  type: json
+                  example: {"en" : "Christopher Nolan", "ka" : "კრისტოფერ ნოლანი"}
+                description:
+                  type: json
+                  example: {"en" : "Cool shit", "ka" : "საკაიფოა"}
+                genre: 
+                  type: json
+                  example: ['Horror', 'Drama']
+                year: 
+                  type: number
+                  example : 1999
+                budget: 
+                  type: number
+                  example: 200000
+                thumbnail :
+                  type: file
+                  format: binary
+              required:
+                - name
+                - director
+                - description
+                - genre
+                - year
+                - budget
+                - thumbnail
+      responses:
+        "201":
+          description: Created
+          content:
+            multipart/form-data:
+              schema:
+                allOf:
+                  - $ref: "../schemas/movies.yaml#/components/schemas/Movies"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+     delete:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: delete a movie
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
+    
+   
+
+    

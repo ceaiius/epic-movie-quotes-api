@@ -14,12 +14,14 @@ class NotificationController extends Controller
 		return response()->json($notifications->values()->all(), 200);
 	}
 
-	public function index(Request $request)
+	public function index(Request $request): JsonResponse
 	{
 		foreach ($request->ids as $id)
 		{
 			Notifications::where('id', $id)->update(['read'=>true]);
 		}
+
+		return response()->json('Notifications read!', 200);
 	}
 
 	public function count()

@@ -1,0 +1,20 @@
+components:
+  schemas:
+    Auth:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            username:
+              type: string
+              example: "mfdoom"
+              minLength: 6
+            email:
+              type: string
+              example: "mfdoom@gmail.com"
+              format: email
+            password:
+              type: string
+              example: "allcaps"
+                   
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"

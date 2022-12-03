@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: Epic Movie Quotes
+  description: Here goes description
+  version: 0.1.9
+
+servers:
+  - url: http://localhost:8000/api
+    description: local server
+  - url: http://producation.app/api
+    description: production server
+
+paths:
+  /register:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1register"
+  /login:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1login"
+  /logout:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1logout"
+  /me:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1me"
+  /user:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1user"
+  /auth/google:
+    $ref: "./_swagger/paths/google.yaml#/paths/~1google"
+  /google:
+    $ref: "./_swagger/paths/google.yaml#/paths/~1google-callback"
+  /email/verify:
+    $ref: "./_swagger/paths/verification.yaml#/paths/~1email~1verify"
+  /email/verify/{id}/{hash}:
+    $ref: "./_swagger/paths/verification.yaml#/paths/~1email~1verify~1{id}~1{hash}"
+  /forgot-password:
+    $ref: "./_swagger/paths/forgot_password.yaml#/paths/~1forgot-password"
+  /reset-password: 
+    $ref: "./_swagger/paths/forgot_password.yaml#/paths/~1reset-password"
+  /movies:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies"
+  /movies/{id}:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{id}"
+  /quotes:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes"
+  /quotes-all:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes-all"
+  /quotes/{id}:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{id}"
+  /quotes-like:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes-like"
+  /check:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1check"
+  /comment/{id}:
+    $ref: "./_swagger/paths/comment.yaml#/paths/~1comment~1{id}"
+  /notifications:
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications"
+  /notifications-count:
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications-count"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Auth:
+      allOf:
+        - $ref: "./_swagger/schemas/auth.yaml#/components/schemas/Auth"
+    Movies:
+      allOf:
+        - $ref: "./_swagger/schemas/movies.yaml#/components/schemas/Movies"
+    Quotes:
+      allOf:
+        - $ref: "./_swagger/schemas/quotes.yaml#/components/schemas/Quotes"
+    Comment:
+      allOf:
+        - $ref: "./_swagger/schemas/comment.yaml#/components/schemas/Comment"
+    Notifications:
+      allOf:
+        - $ref: "./_swagger/schemas/notifications.yaml#/components/schemas/Notifications"
+    

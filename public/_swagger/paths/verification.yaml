@@ -1,0 +1,28 @@
+paths:
+  /email/verify:
+    get:
+      tags:
+        - Verification
+      security:
+        - bearerAuth: []
+      summary: send email verification email
+      responses:
+        "200":
+          $ref: "../responses/verification.yaml#/components/responses/verification/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /email/verify/{id}/{hash}:
+    get:
+      tags:
+        - Verification
+      security:
+        - bearerAuth: []
+      summary: verify email
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+        - $ref: "../common.yaml#/components/parameters/hash"
+      responses:
+        "200":
+          $ref: "../responses/verification.yaml#/components/responses/verification/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"

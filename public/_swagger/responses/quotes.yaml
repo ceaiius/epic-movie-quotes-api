@@ -1,0 +1,13 @@
+components:
+  responses:
+    quotes:
+      "200":
+        description: OK
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/quotes.yaml#/components/schemas/Quotes"
+     

@@ -36,11 +36,7 @@ Route::controller(VerificationController::class)->group(function () {
 	Route::get('email/verify/{id}/{hash}', 'show')->middleware(['auth.verified', 'signed'])->name('verification.verify');
 });
 
-Route::controller(ForgetPasswordController::class)
-	->group(function () {
-		Route::get('forgot-password', 'index')->name('password.request.get');
-		Route::post('/forgot-password', 'show')->name('password.email.post');
-	});
+Route::post('/forgot-password', [ForgetPasswordController::class, 'show'])->name('password.email.post');
 
 Route::controller(ResetPasswordController::class)
 ->group(function () {

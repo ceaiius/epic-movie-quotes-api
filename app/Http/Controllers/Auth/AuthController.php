@@ -59,14 +59,14 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, $remember, '/', config('auth.front_end_top_level_domain'), true, true, false);
 
-		return response()->json($jwt, 200)->withCookie($cookie);
+		return response()->json('Successfully logged in! ', 200)->withCookie($cookie);
 	}
 
 	public function logout(): JsonResponse
 	{
 		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false);
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('Successfully logged out!', 200)->withCookie($cookie);
 	}
 
 	public function me(): JsonResponse

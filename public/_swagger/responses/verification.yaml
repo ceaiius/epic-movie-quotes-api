@@ -1,0 +1,13 @@
+components:
+  responses:
+    verification:
+      "200":
+        description: Email sent
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/auth.yaml#/components/schemas/Auth"
+     

@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Password;
 
 class ForgetPasswordController extends Controller
 {
-	public function index(): JsonResponse
-	{
-		return  response()->json('email sent', 200);
-	}
-
 	public function show(ForgetPasswordRequest $request): JsonResponse
 	{
 		$request->validated();
