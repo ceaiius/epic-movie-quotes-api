@@ -82,6 +82,11 @@ class QuoteController extends Controller
 		return response()->json(Quote::with('author')->with('movies')->with('comments.author')->withCount('users')->orderBy('created_at', 'desc')->get(), 200);
 	}
 
+	public function show(Request $request): JsonResponse
+	{
+		return response()->json(Quote::query()->take($request->id)->with('author')->with('movies')->with('comments.author')->withCount('users')->orderBy('created_at', 'desc')->get(), 200);
+	}
+
 	public function store(StoreQuoteRequest $request): JsonResponse
 	{
 		$attributes = $request->validated();

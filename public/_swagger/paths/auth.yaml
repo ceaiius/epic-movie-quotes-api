@@ -16,15 +16,18 @@ paths:
                 username:
                   type: string
                   example: "mfdoom"
+                  minLength: 6
                 email:
                   type: string
                   example: "mfdoom@gmail.com"
                 password:
                   type: string
                   example: "allcaps"
+                  minLength: 8
                 password_confirmation:
                   type: string
                   example: "allcaps"
+                  minLength: 8
               required:
                 - username
                 - email

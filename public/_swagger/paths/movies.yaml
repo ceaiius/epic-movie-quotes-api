@@ -47,7 +47,7 @@ paths:
                   type: string
                   example: "საკაიფოა"
                 genre: 
-                  type: array
+                  type: json
                   example: ['Horror', 'Drama']
                 year: 
                   type: number
