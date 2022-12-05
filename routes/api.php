@@ -66,6 +66,7 @@ Route::middleware('jwt.auth')->group(function () {
 		Route::post('quotes/{quote}', 'update')->name('quotes.update');
 		Route::post('quotes-like', 'like')->name('quotes.like');
 		Route::post('check', 'check')->name('quotes.check');
+		Route::post('quotes-show', 'show')->name('quotes.show');
 	});
 
 	Route::controller(CommentController::class)->group(function () {
