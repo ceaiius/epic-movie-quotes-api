@@ -16,5 +16,6 @@ components:
             password:
               type: string
               example: "allcaps"
+              minLength: 8
                    
         - $ref: "../common.yaml#/components/schemas/TimeStamps"

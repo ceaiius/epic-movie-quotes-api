@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Epic Movie Quotes
-  description: Here goes description
+  description: API documentation for epic movie quotes :*
   version: 0.1.9
 
 servers:
