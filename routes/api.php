@@ -80,5 +80,11 @@ Route::middleware('jwt.auth')->group(function () {
 		Route::get('notifications-count', 'count')->name('notifications.count');
 	});
 
-	Route::post('update', [UpdateProfileController::class, 'index'])->name('update');
+	Route::controller(UpdateProfileController::class)->group(function () {
+		Route::post('update', 'index')->name('update');
+		Route::post('emails-store', 'store')->name('emails.store');
+		Route::get('emails', 'get')->name('emails.get');
+		Route::delete('emails/{email}', 'destroy')->name('emails.destroy');
+		Route::post('emails-verify', 'verify')->name('emails.verify');
+	});
 });
