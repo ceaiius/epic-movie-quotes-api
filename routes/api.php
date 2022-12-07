@@ -86,5 +86,6 @@ Route::middleware('jwt.auth')->group(function () {
 		Route::get('emails', 'get')->name('emails.get');
 		Route::delete('emails/{email}', 'destroy')->name('emails.destroy');
 		Route::post('emails-verify', 'verify')->name('emails.verify');
+		Route::post('emails-primary', 'primary')->name('emails.primary');
 	});
 });

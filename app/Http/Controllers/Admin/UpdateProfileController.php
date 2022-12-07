@@ -71,4 +71,15 @@ class UpdateProfileController extends Controller
 
 		return response()->json('email verified!', 200);
 	}
+
+	public function primary(Request $request): JsonResponse
+	{
+		$user = User::where('id', jwtUser()->id)->first();
+		$email = Email::where('email', $request->email)->first();
+		$email->email = $user->email;
+		$email->save();
+		$user->email = $request->email;
+		$user->save();
+		return response()->json('Primary email changed!', 200);
+	}
 }

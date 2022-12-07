@@ -25,7 +25,6 @@ class AddEmailRequest extends FormRequest
 	{
 		return [
 			'email' => 'required|email',
-			'type'  => 'required',
 			'token' => 'nullable',
 		];
 	}

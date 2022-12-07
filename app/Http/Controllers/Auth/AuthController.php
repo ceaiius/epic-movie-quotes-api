@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
@@ -32,12 +33,34 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
-		$authenticated = auth()->attempt(
-			[
-				'email'    => $request->email,
-				'password' => $request->password,
-			]
-		);
+		$email = Email::where('email', $request->email)->first();
+		if ($email)
+		{
+			if ($email->email_verified_at !== null)
+			{
+				$email = Email::where('email', $request->email)->first()->user->email;
+
+				$authenticated = auth()->attempt(
+					[
+						'email'    => $email,
+						'password' => $request->password,
+					]
+				);
+			}
+			else
+			{
+				return response()->json('Email is not verified!', 401);
+			}
+		}
+		else
+		{
+			$authenticated = auth()->attempt(
+				[
+					'email'    => $request->email,
+					'password' => $request->password,
+				]
+			);
+		}
 
 		if (!$authenticated)
 		{
@@ -52,7 +75,7 @@ class AuthController extends Controller
 
 		$payload = [
 			'exp' => Carbon::now()->addHours(4)->timestamp,
-			'uid' => User::where('email', request()->email)->first()->id,
+			'uid' => auth()->user()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
