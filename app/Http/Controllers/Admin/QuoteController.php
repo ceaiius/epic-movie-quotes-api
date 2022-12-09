@@ -28,6 +28,38 @@ class QuoteController extends Controller
 		return response()->json($quotes, 200);
 	}
 
+	public function search(Request $request): JsonResponse
+	{
+		$quotes = [];
+		$search = $request->search;
+		if ($search[0] == '@')
+		{
+			$search = ltrim($search, '@');
+			$quotes = Quote::whereHas('movies', function ($query) use ($search) {
+				$query
+					->where('name->en', 'like', $search . '%')
+					->orWhere('name->ka', 'like', $search . '%');
+			})->get();
+		}
+		elseif ($search[0] == '#')
+		{
+			$search = ltrim($search, '#');
+			$quotes = Quote::query()
+				->where('name->en', 'like', $search . '%')
+				->orWhere('name->ka', 'like', $search . '%')
+				->get();
+		}
+		else
+		{
+			$quotes = Quote::whereHas('movies', function ($query) use ($search) {
+				$query
+					->where('name->en', 'like', $search . '%')->orWhere('name->ka', 'like', $search . '%');
+			})->orwhere('name->en', 'like', $search . '%')
+			->orwhere('name->ka', 'like', $search . '%')->get();
+		}
+		return response()->json($quotes->load('author')->load('users')->load('movies')->load('comments.author'));
+	}
+
 	public function check(Request $request)
 	{
 		$like = DB::table('quote_user')->where('user_id', jwtUser()->id)->where('quote_id', $request->quote_id)->first();
