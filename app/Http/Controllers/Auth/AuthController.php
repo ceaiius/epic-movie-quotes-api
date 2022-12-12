@@ -33,6 +33,7 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
+		$user = User::where('username', $request->email)->first();
 		$email = Email::where('email', $request->email)->first();
 		if ($email)
 		{
@@ -51,6 +52,15 @@ class AuthController extends Controller
 			{
 				return response()->json('Email is not verified!', 401);
 			}
+		}
+		elseif ($user)
+		{
+			$authenticated = auth()->attempt(
+				[
+					'email'    => $user->email,
+					'password' => $request->password,
+				]
+			);
 		}
 		else
 		{

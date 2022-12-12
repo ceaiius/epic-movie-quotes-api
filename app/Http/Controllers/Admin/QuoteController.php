@@ -57,7 +57,7 @@ class QuoteController extends Controller
 			})->orwhere('name->en', 'like', $search . '%')
 			->orwhere('name->ka', 'like', $search . '%')->get();
 		}
-		return response()->json($quotes->load('author')->load('users')->load('movies')->load('comments.author'));
+		return response()->json($quotes->load('author')->load('users')->load('movies')->load('comments.author')->loadCount('users'));
 	}
 
 	public function check(Request $request)
@@ -69,8 +69,6 @@ class QuoteController extends Controller
 
 	public function like(Request $request)
 	{
-		event(new AddLikeEvent($request->all()));
-
 		$like = DB::table('quote_user')
 			->where('user_id', $request->user_id)
 			->where('quote_id', $request->quote_id)
@@ -96,7 +94,11 @@ class QuoteController extends Controller
 					'read'     => false,
 				]);
 			}
-
+			event(new AddLikeEvent([
+				'user_id'   => $request->user_id,
+				'quote_id'  => $request->quote_id,
+				'was_liked' => true,
+			]));
 			return response()->json(['message' => 'like'], 200);
 		}
 		else
@@ -105,6 +107,11 @@ class QuoteController extends Controller
 			->where('user_id', $request->user_id)
 			->where('quote_id', $request->quote_id)
 			->delete();
+			event(new AddLikeEvent([
+				'user_id'   => $request->user_id,
+				'quote_id'  => $request->quote_id,
+				'was_liked' => false,
+			]));
 			return response()->json(['message' => 'unlike'], 200);
 		}
 	}

@@ -28,7 +28,14 @@ class MovieController extends Controller
 
 	public function get(Movie $movie): JsonResponse
 	{
-		return response()->json($movie, 200);
+		if (jwtUser()->id == $movie->user_id)
+		{
+			return response()->json($movie, 200);
+		}
+		else
+		{
+			return response()->json('Unauthorized', 401);
+		}
 	}
 
 	public function store(StoreMovieRequest $request): JsonResponse
