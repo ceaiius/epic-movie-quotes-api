@@ -18,7 +18,7 @@ class CommentController extends Controller
 		$attributes = $request->validated();
 		$attributes['user_id'] = jwtUser()->id;
 		$attributes['movie_id'] = $quote->movie_id;
-		event(new AddCommentEvent($attributes));
+		$attributes['quote_id'] = $quote->id;
 
 		if ($request->author_id !== jwtUser()->id)
 		{
@@ -32,7 +32,8 @@ class CommentController extends Controller
 			]);
 		}
 
-		$quote->comments()->create($attributes);
+		$comment = Comment::create($attributes);
+		event(new AddCommentEvent($comment->load('author')));
 		return response()->json('Comment posted!', 200);
 	}
 
