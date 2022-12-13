@@ -86,8 +86,7 @@ class AuthController extends Controller
 				);
 			}
 		}
-
-		if (!$authenticated)
+		else
 		{
 			return response()->json('wrong email or password', 401);
 		}
