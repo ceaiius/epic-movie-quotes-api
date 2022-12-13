@@ -47,6 +47,8 @@ paths:
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes-like"
   /check:
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1check"
+  /quotes-search:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1search"
   /comment/{id}:
     $ref: "./_swagger/paths/comment.yaml#/paths/~1comment~1{id}"
   /notifications:

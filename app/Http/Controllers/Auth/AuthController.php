@@ -36,7 +36,6 @@ class AuthController extends Controller
 		$user = User::where('username', $request->email)->first();
 		$email = Email::where('email', $request->email)->first();
 		$unvalidated = User::where('email', $request->email)->first();
-
 		if ($email)
 		{
 			if ($email->email_verified_at !== null)
@@ -81,20 +80,11 @@ class AuthController extends Controller
 			{
 				$authenticated = auth()->attempt(
 					[
-						'email'    => $user->email,
+						'email'    => $unvalidated->email,
 						'password' => $request->password,
 					]
 				);
 			}
-		}
-		else
-		{
-			$authenticated = auth()->attempt(
-				[
-					'email'    => $request->email,
-					'password' => $request->password,
-				]
-			);
 		}
 
 		if (!$authenticated)
