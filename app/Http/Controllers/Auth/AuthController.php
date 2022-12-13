@@ -35,6 +35,8 @@ class AuthController extends Controller
 	{
 		$user = User::where('username', $request->email)->first();
 		$email = Email::where('email', $request->email)->first();
+		$unvalidated = User::where('email', $request->email)->first();
+
 		if ($email)
 		{
 			if ($email->email_verified_at !== null)
@@ -55,12 +57,35 @@ class AuthController extends Controller
 		}
 		elseif ($user)
 		{
-			$authenticated = auth()->attempt(
-				[
-					'email'    => $user->email,
-					'password' => $request->password,
-				]
-			);
+			if ($user->email_verified_at == null)
+			{
+				return response()->json('Email is not verified', 401);
+			}
+			else
+			{
+				$authenticated = auth()->attempt(
+					[
+						'email'    => $user->email,
+						'password' => $request->password,
+					]
+				);
+			}
+		}
+		elseif ($unvalidated)
+		{
+			if ($unvalidated->email_verified_at == null)
+			{
+				return response()->json('Email is not verified', 401);
+			}
+			else
+			{
+				$authenticated = auth()->attempt(
+					[
+						'email'    => $user->email,
+						'password' => $request->password,
+					]
+				);
+			}
 		}
 		else
 		{
