@@ -13,7 +13,7 @@ components:
               example: 1
             name:
               type: json
-              example: {"en" : "Nika","ka" : "ნიკა"}
+              example: {"en" : "I like kung-fu","ka" : "კუნგფუ მევასება"}
             thumbnail:
               type: file
               format: binary

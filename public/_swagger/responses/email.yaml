@@ -1,0 +1,13 @@
+components:
+  responses:
+    email:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/email.yaml#/components/schemas/Email"
+     

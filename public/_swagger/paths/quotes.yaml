@@ -192,6 +192,39 @@ paths:
                   
         "404":
           $ref: "../common.yaml#/components/responses/404"
+  /search:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: search a quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  example: "Matrix"
+                
+              required:
+                - search
+                
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/quotes.yaml#/components/schemas/Quotes"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
 
 
   

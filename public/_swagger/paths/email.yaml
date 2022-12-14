@@ -1,0 +1,96 @@
+paths:
+  /email:
+    post:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: add new email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                email:
+                  type: string
+                  example: "something@gmail.com"
+              required:
+                - user_id
+                - email
+                
+      responses:
+        "201":
+          description: Created
+          content:
+            multipart/form-data:
+              schema:
+                allOf:
+                  - $ref: "../schemas/email.yaml#/components/schemas/Email"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /get-email:
+    get:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: returns emails
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/email.yaml#/components/responses/email/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /primary-email:
+    post:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: make a primary email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "somethingelse@gmail.com"
+              required:
+                - email
+                
+      responses:
+        "200":
+          description: Ok
+          content:
+            multipart/form-data:
+              schema:
+                allOf:
+                  - $ref: "../schemas/email.yaml#/components/schemas/Email"
+                  
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+
+  /email/{id}:
+    delete:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: delete a comment
+      parameters:
+        - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/email.yaml#/components/responses/email/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
