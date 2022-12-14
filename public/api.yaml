@@ -7,7 +7,7 @@ info:
 servers:
   - url: http://localhost:8000/api
     description: local server
-  - url: https://epic-movie-quotes.api.lasha-darchiashvili.redberryinternship.ge/swagger
+  - url: https://epic-movie-quotes.api.lasha-darchiashvili.redberryinternship.ge/api
     description: production server
 
 paths:
