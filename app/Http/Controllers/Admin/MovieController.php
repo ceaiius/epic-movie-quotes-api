@@ -28,6 +28,7 @@ class MovieController extends Controller
 
 	public function get(Movie $movie): JsonResponse
 	{
+		$movie->genre = json_decode($movie->genre, true);
 		if (jwtUser()->id == $movie->user_id)
 		{
 			return response()->json($movie, 200);
